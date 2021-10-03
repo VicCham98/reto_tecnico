@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Table, Radio, Input, Select } from "antd";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getDivisiones, setSelectedValue, searchDivision } from "../redux/Division/actions";
 
 const { Option } = Select;
 const { Search } = Input;
 
 const TableComponent = () => {
-  const [checkStrictly, setCheckStrictly] = useState(false);
-  const [filter, setFilter] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [divisiones, setDivisiones] = useState([]);
-  const [divisionesBack, setDivisionesBack] = useState([]);
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-  });
+  const dispatch = useDispatch();
+  const { divisionesFilter, filter, pagination, loading } = useSelector(
+    (state) => state.division
+  );
   const columns = [
     {
       title: "División",
@@ -55,7 +51,6 @@ const TableComponent = () => {
       sorter: (a, b) => a.embajador - b.embajador,
     },
   ];
-  const [selectedValue, setSelectedValue] = useState(columns[0].dataIndex);
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -79,53 +74,18 @@ const TableComponent = () => {
   ];
 
   const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
-    callDivisiones(pagination.current);
+    const page = pagination.current;
+    const pageSize = pagination.pageSize;
+    dispatch(getDivisiones(page, pageSize));
   };
 
   const onSearch = (value) => {
-    if (value.length > 0) {
-      setDivisiones(() =>
-        divisionesBack.filter(
-          (item) => item[selectedValue].toString() === value.toString()
-        )
-      );
-    }
-  };
-
-  const callDivisiones = async (page = 1, pageSize = 10) => {
-    setLoading(true);
-    try {
-      const { data } = await axios.post(
-        `http://localhost/retoTecnico_backend/api/div/divisiones?page=${page}`,
-        { pageSize }
-      );
-      setDivisiones(data.divisiones.data);
-      setDivisionesBack(data.divisiones.data);
-      setPagination({
-        current: data.divisiones.current_page,
-        pageSize: data.divisiones.per_page,
-        showTotal: (total) => `Total ${data.divisiones.total} items`,
-        total: data.divisiones.total,
-        showSizeChanger: true,
-        onShowSizeChange: (current, pageSize) => console.log(current, pageSize),
-      });
-      setFilter(
-        data.divisiones.data.map((item) => ({
-          text: item.division,
-          value: item.division,
-        }))
-      );
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
+    dispatch(searchDivision(value))
   };
 
   useEffect(() => {
-    callDivisiones();
-  }, []);
+    dispatch(getDivisiones());
+  }, [dispatch]);
 
   return (
     <div>
@@ -139,7 +99,6 @@ const TableComponent = () => {
       >
         <Radio.Group
           options={options}
-          onChange={(val) => setSelectedValue(val)}
           value="listado"
           optionType="button"
         />
@@ -149,6 +108,7 @@ const TableComponent = () => {
           <Select
             style={{ width: 150, marginRight: 15 }}
             defaultValue={columns[0].dataIndex}
+            onChange={(val) => dispatch(setSelectedValue(val))}
           >
             {columns.map((item) => {
               return (
@@ -169,10 +129,10 @@ const TableComponent = () => {
         loading={loading}
         bordered
         columns={columns}
-        dataSource={divisiones}
+        dataSource={divisionesFilter}
         onChange={onChange}
         pagination={pagination}
-        rowSelection={{ ...rowSelection, checkStrictly }}
+        rowSelection={{ ...rowSelection }}
       />
     </div>
   );
