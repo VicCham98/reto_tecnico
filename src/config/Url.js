@@ -1,3 +1,3 @@
-const Url = "http://localhost/retoTecnico_backend/api/";
+const Url = "https://apimandu.grupo-sos.com/api/";
 
 export default Url;
