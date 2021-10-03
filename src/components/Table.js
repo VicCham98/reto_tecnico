@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Radio, Input, Select } from "antd";
+import axios from "axios";
+
 const { Option } = Select;
 const { Search } = Input;
 
 const TableComponent = () => {
   const [checkStrictly, setCheckStrictly] = useState(false);
+  const [filter, setFilter] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [divisiones, setDivisiones] = useState([]);
   const pagination = {
     current: 1,
     pageSize: 10,
@@ -14,90 +19,40 @@ const TableComponent = () => {
     {
       title: "División",
       dataIndex: "division",
-      filters: [
-        {
-          text: "Strategy",
-          value: "Joe",
-        },
-        {
-          text: "Producto",
-          value: "Jim",
-        },
-        {
-          text: "Dirección general",
-          value: "Joe",
-        },
-        {
-          text: "Operaciones",
-          value: "Jim",
-        },
-        {
-          text: "CEO",
-          value: "Jim",
-        },
-      ],
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
-      onFilter: (value, record) => record.name.indexOf(value) === 0,
+      filters: filter,
+      onFilter: (value, record) => record.division === value,
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.division.length - b.division.length,
     },
     {
       title: "División superior",
-      dataIndex: "divSuperior",
+      dataIndex: "divisionSup",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.age - b.age,
     },
     {
       title: "Colaboradores",
-      dataIndex: "name",
+      dataIndex: "colaboradores",
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
+      sorter: (a, b) => a.colaboradores - b.colaboradores,
     },
     {
       title: "Nivel",
-      dataIndex: "name",
+      dataIndex: "nivel",
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
+      sorter: (a, b) => a.nivel - b.nivel,
     },
     {
       title: "Subdivisiones",
-      dataIndex: "name",
+      dataIndex: "subDivision",
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
+      sorter: (a, b) => a.subDivision - b.subDivision,
     },
     {
       title: "Embajadores",
-      dataIndex: "name",
+      dataIndex: "embajador",
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
-    },
-  ];
-
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-    },
-    {
-      key: "4",
-      name: "Jim Red",
-      age: 32,
-      address: "London No. 2 Lake Park",
+      sorter: (a, b) => a.embajador - b.embajador,
     },
   ];
 
@@ -128,30 +83,68 @@ const TableComponent = () => {
 
   const onSearch = (value) => console.log(value);
 
+  const callDivisiones = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        "http://localhost/retoTecnico_backend/api/div/divisiones"
+      );
+      setDivisiones(data.divisiones);
+      setFilter(
+        data.divisiones.map((item) => ({
+          text: item.division,
+          value: item.division,
+        }))
+      );
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    callDivisiones();
+  }, []);
+
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 25, marginBottom: 25 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: 25,
+          marginBottom: 25,
+        }}
+      >
         <Radio.Group
           options={options}
           onChange={() => {}}
           value="listado"
           optionType="button"
         />
-        <Input.Group style={{ width: "50%", display: 'flex', justifyContent: 'flex-end'}}>
-          <Select style={{ width: 150, marginRight: 15 }} defaultValue="Home">
-            <Option value="Home">Columnas</Option>
+        <Input.Group
+          style={{ width: "50%", display: "flex", justifyContent: "flex-end" }}
+        >
+          <Select style={{ width: 150, marginRight: 15 }} defaultValue={columns[0].dataIndex}>
+            {
+              columns.map((item) => {
+                return <Option key={item.dataIndex} value={item.dataIndex}>{item.title}</Option>
+              })
+            }
           </Select>
           <Search
             placeholder="input search text"
             onSearch={onSearch}
-            style={{ width: 200}}
+            style={{ width: 200 }}
           />
         </Input.Group>
       </div>
       <Table
+        loading={loading}
         bordered
         columns={columns}
-        dataSource={data}
+        dataSource={divisiones}
         onChange={onChange}
         pagination={pagination}
         rowSelection={{ ...rowSelection, checkStrictly }}
