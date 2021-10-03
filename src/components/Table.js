@@ -10,11 +10,11 @@ const TableComponent = () => {
   const [filter, setFilter] = useState([]);
   const [loading, setLoading] = useState(false);
   const [divisiones, setDivisiones] = useState([]);
+  const [divisionesBack, setDivisionesBack] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
   });
-
   const columns = [
     {
       title: "División",
@@ -55,6 +55,7 @@ const TableComponent = () => {
       sorter: (a, b) => a.embajador - b.embajador,
     },
   ];
+  const [selectedValue, setSelectedValue] = useState(columns[0].dataIndex);
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -79,22 +80,32 @@ const TableComponent = () => {
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
-    callDivisiones(pagination.current)
+    callDivisiones(pagination.current);
   };
 
-  const onSearch = (value) => console.log(value);
+  const onSearch = (value) => {
+    if (value.length > 0) {
+      setDivisiones(() =>
+        divisionesBack.filter(
+          (item) => item[selectedValue].toString() === value.toString()
+        )
+      );
+    }
+  };
 
   const callDivisiones = async (page = 1, pageSize = 10) => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        `http://localhost/retoTecnico_backend/api/div/divisiones?page=${page}`, { pageSize }
+        `http://localhost/retoTecnico_backend/api/div/divisiones?page=${page}`,
+        { pageSize }
       );
       setDivisiones(data.divisiones.data);
+      setDivisionesBack(data.divisiones.data);
       setPagination({
         current: data.divisiones.current_page,
         pageSize: data.divisiones.per_page,
-        showTotal: total => `Total ${data.divisiones.total} items`,
+        showTotal: (total) => `Total ${data.divisiones.total} items`,
         total: data.divisiones.total,
         showSizeChanger: true,
         onShowSizeChange: (current, pageSize) => console.log(current, pageSize),
@@ -128,7 +139,7 @@ const TableComponent = () => {
       >
         <Radio.Group
           options={options}
-          onChange={() => {}}
+          onChange={(val) => setSelectedValue(val)}
           value="listado"
           optionType="button"
         />
