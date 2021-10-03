@@ -1,8 +1,8 @@
 import { types } from "../actions";
 
-export const getDivisiones = (page = 1, pageSize = 10) => ({
+export const getDivisiones = (page = 1, pageSize = 10, column = "division", search = "") => ({
   type: types.division.getDivisiones,
-  payload: { page, pageSize },
+  payload: { page, pageSize, column, search },
 });
 
 export const getDivisionesSuccess = (data) => ({

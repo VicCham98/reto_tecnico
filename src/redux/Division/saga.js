@@ -5,10 +5,12 @@ import { apiCall } from "../../config/callWrapper";
 
 function* getDivisiones({ payload }) {
   try {
-    const { page, pageSize } = payload;
+    const { page, pageSize, column, search } = payload;
     const response = yield call(apiCall, "POST", "div/divisiones?page=1", {
       page,
       pageSize,
+      column,
+      search,
     });
     yield put(getDivisionesSuccess(response));
   } catch (err) {

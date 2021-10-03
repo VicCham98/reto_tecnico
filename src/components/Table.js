@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
 import { Table, Radio, Input, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getDivisiones, setSelectedValue, searchDivision } from "../redux/Division/actions";
+import { getDivisiones, setSelectedValue } from "../redux/Division/actions";
 
 const { Option } = Select;
 const { Search } = Input;
 
 const TableComponent = () => {
   const dispatch = useDispatch();
-  const { divisionesFilter, filter, pagination, loading } = useSelector(
-    (state) => state.division
-  );
+  const { divisionesFilter, filter, pagination, loading, selectedValue } =
+    useSelector((state) => state.division);
   const columns = [
     {
       title: "División",
@@ -80,7 +79,7 @@ const TableComponent = () => {
   };
 
   const onSearch = (value) => {
-    dispatch(searchDivision(value))
+    dispatch(getDivisiones(1, 10, selectedValue, value));
   };
 
   useEffect(() => {
@@ -97,11 +96,7 @@ const TableComponent = () => {
           marginBottom: 25,
         }}
       >
-        <Radio.Group
-          options={options}
-          value="listado"
-          optionType="button"
-        />
+        <Radio.Group options={options} value="listado" optionType="button" />
         <Input.Group
           style={{ width: "50%", display: "flex", justifyContent: "flex-end" }}
         >
