@@ -26,16 +26,10 @@ export default (state = INIT_STATE, action) => {
         showSizeChanger: true,
         onShowSizeChange: (current, pageSize) => console.log(current, pageSize),
       };
-      const filter = [
-        {
-          text: 'nuevo',
-          value: 'seleccion',
-        },
-        ...data.divisiones.data.map((item) => ({
-          text: item.division,
-          value: item.division,
-        }))
-      ];
+      const filter = data.divisiones.data.map((item) => ({
+        text: item.division,
+        value: item.division,
+      }));
       return {
         ...state,
         loading: false,
