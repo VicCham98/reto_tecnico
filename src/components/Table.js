@@ -10,10 +10,10 @@ const TableComponent = () => {
   const [filter, setFilter] = useState([]);
   const [loading, setLoading] = useState(false);
   const [divisiones, setDivisiones] = useState([]);
-  const pagination = {
+  const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
-  };
+  });
 
   const columns = [
     {
@@ -79,19 +79,28 @@ const TableComponent = () => {
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
+    callDivisiones(pagination.current)
   };
 
   const onSearch = (value) => console.log(value);
 
-  const callDivisiones = async () => {
+  const callDivisiones = async (page = 1, pageSize = 10) => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        "http://localhost/retoTecnico_backend/api/div/divisiones"
+      const { data } = await axios.post(
+        `http://localhost/retoTecnico_backend/api/div/divisiones?page=${page}`, { pageSize }
       );
-      setDivisiones(data.divisiones);
+      setDivisiones(data.divisiones.data);
+      setPagination({
+        current: data.divisiones.current_page,
+        pageSize: data.divisiones.per_page,
+        showTotal: total => `Total ${data.divisiones.total} items`,
+        total: data.divisiones.total,
+        showSizeChanger: true,
+        onShowSizeChange: (current, pageSize) => console.log(current, pageSize),
+      });
       setFilter(
-        data.divisiones.map((item) => ({
+        data.divisiones.data.map((item) => ({
           text: item.division,
           value: item.division,
         }))
@@ -126,12 +135,17 @@ const TableComponent = () => {
         <Input.Group
           style={{ width: "50%", display: "flex", justifyContent: "flex-end" }}
         >
-          <Select style={{ width: 150, marginRight: 15 }} defaultValue={columns[0].dataIndex}>
-            {
-              columns.map((item) => {
-                return <Option key={item.dataIndex} value={item.dataIndex}>{item.title}</Option>
-              })
-            }
+          <Select
+            style={{ width: 150, marginRight: 15 }}
+            defaultValue={columns[0].dataIndex}
+          >
+            {columns.map((item) => {
+              return (
+                <Option key={item.dataIndex} value={item.dataIndex}>
+                  {item.title}
+                </Option>
+              );
+            })}
           </Select>
           <Search
             placeholder="input search text"
