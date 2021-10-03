@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Table } from "antd";
+import { Table, Radio, Input, Select } from "antd";
+const { Option } = Select;
+const { Search } = Input;
 
 const TableComponent = () => {
   const [checkStrictly, setCheckStrictly] = useState(false);
@@ -71,7 +73,7 @@ const TableComponent = () => {
       sorter: (a, b) => a.age - b.age,
     },
   ];
-  
+
   const data = [
     {
       key: "1",
@@ -98,7 +100,6 @@ const TableComponent = () => {
       address: "London No. 2 Lake Park",
     },
   ];
-  
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -116,11 +117,37 @@ const TableComponent = () => {
     },
   };
 
+  const options = [
+    { label: "Listado", value: "listado" },
+    { label: "Árbol", value: "arbol" },
+  ];
+
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
   };
+
+  const onSearch = (value) => console.log(value);
+
   return (
     <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 25, marginBottom: 25 }}>
+        <Radio.Group
+          options={options}
+          onChange={() => {}}
+          value="listado"
+          optionType="button"
+        />
+        <Input.Group style={{ width: "50%", display: 'flex', justifyContent: 'flex-end'}}>
+          <Select style={{ width: 150, marginRight: 15 }} defaultValue="Home">
+            <Option value="Home">Columnas</Option>
+          </Select>
+          <Search
+            placeholder="input search text"
+            onSearch={onSearch}
+            style={{ width: 200}}
+          />
+        </Input.Group>
+      </div>
       <Table
         bordered
         columns={columns}

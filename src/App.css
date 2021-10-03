@@ -24,12 +24,17 @@ body {
 .mainLayout .ant-layout-header {
   background: linear-gradient(
     90deg,
-    rgba(47, 82, 248, 1) 0%,
+    rgb(9, 47, 240) 0%,
     rgba(86, 167, 242, 0.8914916308320203) 66%
   );
   padding: 0;
   height: auto;
   line-height: 1.6;
+}
+
+.main-content {
+  height: 100%;
+  background-color: white ;
 }
 
 p {

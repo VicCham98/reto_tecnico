@@ -13,7 +13,7 @@ function App() {
         <AppHeader />
       </Header>
       <Content>
-        <div className="main">
+        <div className="main-content">
           <Main />
         </div>
       </Content>
