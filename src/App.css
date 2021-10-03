@@ -21,6 +21,10 @@ body {
   background: #fff !important;
 }
 
+.ant-pagination-total-text {
+  margin-right: auto;
+}
+
 .mainLayout .ant-layout-header {
   background: linear-gradient(
     90deg,

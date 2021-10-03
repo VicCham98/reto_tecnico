@@ -21,15 +21,21 @@ export default (state = INIT_STATE, action) => {
       const page = {
         current: data.divisiones.current_page,
         pageSize: data.divisiones.per_page,
-        showTotal: (total) => `Total ${data.divisiones.total} items`,
+        showTotal: (total) => `Total colaboradores: ${data.divisiones.total}`,
         total: data.divisiones.total,
         showSizeChanger: true,
         onShowSizeChange: (current, pageSize) => console.log(current, pageSize),
       };
-      const filter = data.divisiones.data.map((item) => ({
-        text: item.division,
-        value: item.division,
-      }));
+      const filter = [
+        {
+          text: 'nuevo',
+          value: 'seleccion',
+        },
+        ...data.divisiones.data.map((item) => ({
+          text: item.division,
+          value: item.division,
+        }))
+      ];
       return {
         ...state,
         loading: false,
