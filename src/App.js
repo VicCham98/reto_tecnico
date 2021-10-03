@@ -1,18 +1,20 @@
-import React from 'react'
+import React from "react";
 import "./App.css";
 import { Layout } from "antd";
-import Header from './components/Header';
-import Main from './views';
+import AppHeader from "./components/Header";
+import Main from "./views";
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 
 function App() {
   return (
-    <Layout className="app-content">
-      <Header />
+    <Layout className="mainLayout app-content">
+      <Header>
+        <AppHeader />
+      </Header>
       <Content>
-        <div>
-          <Main /> 
+        <div className="main">
+          <Main />
         </div>
       </Content>
     </Layout>

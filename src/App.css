@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css'; 
+@import "~antd/dist/antd.css";
 
 .app-content {
   height: 100vh;
@@ -13,7 +13,7 @@ body {
 
 .container-fluid {
   margin: 0 auto;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   padding: 0 15px;
 }
 
@@ -22,7 +22,11 @@ body {
 }
 
 .mainLayout .ant-layout-header {
-  background: #f8f8f8;
+  background: linear-gradient(
+    90deg,
+    rgba(47, 82, 248, 1) 0%,
+    rgba(86, 167, 242, 0.8914916308320203) 66%
+  );
   padding: 0;
   height: auto;
   line-height: 1.6;
@@ -35,6 +39,38 @@ p {
 
 .bgGray {
   background: #fafafa;
+}
+
+
+.topnav {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.topnav div {
+  margin-left: 10px;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  /* padding: 5px; */
+  margin-right: 5px;
+}
+
+.topnav a:hover {
+  background-color: #4463f9;
+  color: white;
+}
+
+.topnav a.active {
+  background-color: #4463f9;
+  color: white;
 }
 
 /* 
@@ -50,7 +86,7 @@ title holder
 
 .titleHolder:after {
   transform: translateX(-50%);
-  content: '';
+  content: "";
   background: #1890ff;
   position: absolute;
   bottom: 0;
@@ -69,9 +105,9 @@ header
 ------ 
 */
 .ant-layout-header {
-  position: fixed;
+  position: sticky;
   left: 0;
-  right: 0;
+  top: 20;
   z-index: 999;
 }
 
@@ -79,13 +115,12 @@ header
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 2px 0;
 }
 
 .header .logo {
-  font-size: 22px;
-  text-transform: uppercase;
   font-weight: 400;
+  color: #ffffff;
 }
 
 .header .logo .fas {
@@ -95,7 +130,7 @@ header
 }
 
 .header .logo a {
-  color: #333;
+  /* color: #333; */
 }
 
 .header .ant-anchor-wrapper {
@@ -118,7 +153,7 @@ header
 
 .header .ant-anchor-link:before,
 .header .ant-anchor-link:after {
-  content: '';
+  content: "";
   background: #1890ff;
   width: 1px;
   position: absolute;
@@ -159,7 +194,7 @@ header
 
 .header .ant-menu li.ant-menu-item:before,
 .header .ant-menu li.ant-menu-item:after {
-  content: '';
+  content: "";
   background: #1890ff;
   width: 1px;
   position: absolute;
@@ -196,6 +231,18 @@ header
 .header .ant-menu li.ant-menu-item:hover:after {
   right: 5%;
   opacity: 1;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 /* 
@@ -295,7 +342,7 @@ how it works
 }
 
 .worksBlock:before {
-  content: '';
+  content: "";
   background: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0;
@@ -465,7 +512,7 @@ responsive
   .mobileVisible {
     display: block;
   }
-  
+
   .mobileHidden {
     display: none;
   }
