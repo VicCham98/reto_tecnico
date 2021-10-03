@@ -26,6 +26,7 @@ const TableComponent = () => {
         dataIndex: "divisionSup",
         defaultSortOrder: "descend",
         sorter: (a, b) => a.age - b.age,
+        filters: [],
       },
       {
         title: "Colaboradores",
@@ -38,6 +39,7 @@ const TableComponent = () => {
         dataIndex: "nivel",
         defaultSortOrder: "descend",
         sorter: (a, b) => a.nivel - b.nivel,
+        filters: [],
       },
       {
         title: "Subdivisiones",
@@ -48,8 +50,6 @@ const TableComponent = () => {
       {
         title: "Embajadores",
         dataIndex: "embajador",
-        defaultSortOrder: "descend",
-        sorter: (a, b) => a.embajador - b.embajador,
       },
     ];
 

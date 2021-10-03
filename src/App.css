@@ -25,6 +25,15 @@ body {
   margin-right: auto;
 }
 
+.ant-table-column-title {
+  padding-right: 10px;
+  flex: none;
+}
+
+.ant-table-column-sorters {
+  justify-content: flex-start !important;
+}
+
 .mainLayout .ant-layout-header {
   background: linear-gradient(
     90deg,

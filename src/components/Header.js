@@ -48,8 +48,14 @@ const HeaderComponent = () => {
               <a className="active" href="#contact">
                 Organización
               </a>
-              <a href="#about">Modelos</a>
-              <a href="#about">Seguimiento</a>
+              <a href="#about">
+                Modelos &nbsp;
+                <DownOutlined style={{ fontSize: 14 }} />
+              </a>
+              <a href="#about">
+                Seguimiento &nbsp;
+                <DownOutlined style={{ fontSize: 14 }} />
+              </a>
             </div>
           </div>
           <div className="mobileHidden">
@@ -79,7 +85,7 @@ const HeaderComponent = () => {
                       borderRadius: 50,
                       fontSize: 8,
                       paddingLeft: 5,
-                      paddingRight: 5
+                      paddingRight: 5,
                     }}
                   >
                     3
